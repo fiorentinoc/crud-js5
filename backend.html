@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiorentino-TP</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <header>
+        <nav class="w3-top w3-bar w3-black">
+            <a href="#home" class="w3-bar-item w3-button">37845 - Christian Fiorentino</a>
+            <a href="index.html" class="w3-bar-item w3-button">Volver al FRONTEND</a>
+            <!--<a href="#members" class="w3-bar-item w3-button">Members</a>
+            <a href="#contact" class="w3-bar-item w3-button">Contact</a> -->
+        </nav>
+    </header>
+    <main>
+        <div class="w3-container w3-padding-64">
+            <!-- <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-teal w3-large">Crear Item</button>  OTRA FORMA DEL MISMO BOTON -->
+            <button id="btnCrearItem" class="w3-button w3-teal w3-large">Crear Item</button>
+            <button id="btnLeerTodo" class="w3-button w3-teal w3-large">Leer Todo</button>
+            <button id="btnFiltro" class="w3-button w3-teal w3-large">Filtrar</button>
+            <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-teal w3-large w3-disabled">Buscar</button>
+        </div>
+        <div class="w3-container">
+            <table class="w3-table w3-card-4 w3-striped w3-bordered">
+                <thead>
+                    <tr class="w3-blue-grey">
+                        <th>Id.</th>
+                        <th>Categoría</th>
+                        <th>Modelo</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Imágen</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+        <!-- MODAL Agregar Articulo -->
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+        
+                <div class="w3-container w3-center w3-teal"><br>
+                    <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+                    <h3>Datos del artículo</h3>
+                    <!-- <img src="img_avatar4.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top"> -->
+                </div>
+        
+                <form id="form" class="w3-container">
+                    <div class="w3-section">
+                        <!-- <label><b>Id.</b></label>
+                        <input class="w3-input w3-margin-bottom" type="text" placeholder="Ingrese Id." name="id" id="id"> -->
+                        <label><b>Categoría</b></label>
+                        <select class="w3-select  w3-margin-bottom" name="cat" id="cat" required>
+                            <option value="" disabled selected>Seleciona una Categoría:</option>
+                            <option value="anillos">Anillos</option>
+                            <option value="aros">Aros</option>
+                            <option value="dijes">Dijes</option>
+                        </select>
+                        <label><b>Modelo</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese Modelo" name="mod" required id="mod">
+                        <label><b>Precio</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="number" placeholder="Ingrese Precio de venta" name="precio" required id="precio">
+                        <label><b>Stock</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="number" placeholder="Ingrese Stock del producto" name="stk" required id="stk">
+                        <label><b>Nombre</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese el Nombre" name="title" required id="title">
+                        <label><b>Descripción</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese la Descripción" name="desc" required id="desc">
+                        <label><b>Imágen</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese el archivo de la imágen" name="img" required id="img">
+                    </div>
+                    <div class="w3-container w3-border-top w3-padding-16 w3-light-grey w3-right">
+                        <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Cancelar</button>
+                        <button id="btnGuardar" class="w3-button w3-green w3-section w3-padding" type="submit">Guardar</button>
+                        
+                    </div>
+                </form>
+        
+        
+            </div>
+        </div>
+
+        <!-- MODAL FILTRO -->
+        <div id="id02" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+        
+                <div class="w3-container w3-center w3-teal"><br>
+                    <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+                    <h3>FILTRO por categoría</h3>
+                </div>
+        
+                <form id="form2" class="w3-container">
+                    <div class="w3-section">
+                        <!-- <label><b>Id.</b></label>
+                        <input class="w3-input w3-margin-bottom" type="text" placeholder="Ingrese Id." name="id" id="id"> -->
+                        <label><b>Categoría a filtrar</b></label>
+                        <select class="w3-select  w3-margin-bottom" name="cat" id="cate">
+                            <option value="" disabled selected>Seleciona una Categoría:</option>
+                            <option value="anillos">Anillos</option>
+                            <option value="aros">Aros</option>
+                            <option value="dijes">Dijes</option>
+                        </select>
+                        <!-- <label><b>Modelo</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese Modelo" name="mod" required id="mod">
+                        <label><b>Precio</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese Precio de venta" name="precio" required id="precio">
+                        <label><b>Stock</b></label>
+                        <input class="w3-input  w3-margin-bottom" type="text" placeholder="Ingrese Stock del producto" name="stk" required id="stk">
+                         -->
+                    </div>
+                    <div class="w3-container w3-border-top w3-padding-16 w3-light-grey w3-right">
+                        <button onclick="document.getElementById('id02').style.display='none'" type="button" class="w3-button w3-red">Cancelar</button>
+                        <button id="btnFiltrar" class="w3-button w3-green w3-section w3-padding" type="submit">Filtrar Items</button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Alerta BORRADO -->
+        <div id="id03" class="w3-modal">
+            <div class="w3-modal-content w3-panel w3-pale-red w3-card-4 w3-bottombar w3-topbar w3-leftbar w3-border-red w3-round-large w3-animate-top" style="max-width: 50%">
+                <h3>Atención!</h3>
+                <p>¿Desea ELIMINAR el registro seleccionado?</p>
+                <div class="w3-section">
+                    <button onclick="document.getElementById('id03').style.display='none'" type="button" class="w3-button w3-teal">Cancelar</button>
+                    <button id="btnOkBorrar" class="w3-button w3-red">Eliminar</button>
+                </div>
+            </div> 
+        </div>
+
+    </main>
+    <div class="w3-panel w3-pale-green w3-bottombar w3-topbar w3-border-green w3-border">
+        
+        <p>Los datos son leidos desde el Localstorage y si no hay datos, se crea un array por primera vez.</p>
+        <p>Podemos:</p>
+            <ul>
+                <li>Agregar artículos desde el boton "Crear Item"</li>
+                <li>"Leer Todo" traerá todos los datos la Base</li>
+                <li>"Filtrar": Se puede filtrar por categoría</li>
+                <li>Desde acciones se puede "Editar" y "Borrar" los artículos indicados.</li>
+                <li>Los cambios serán guardados en el LocalStorage.</li>
+            </ul>
+    </div>
+
+    <script src="./js/main.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+</html>
