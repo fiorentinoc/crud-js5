@@ -1,136 +1,5 @@
-//Clase Alta-Lectura-Actualizar-Borrar
-class ALAB{
-    #nombreTabla = null
-    #data = null
-
-    constructor(nombreTabla){
-        this.#setNombreTabla(nombreTabla)
-        this.#setData()
-    }
-
-    #setNombreTabla(nombreTabla){
-		this.#nombreTablaValidar(nombreTabla);
-        this.#nombreTabla = nombreTabla;
-	}
-    
-    #setData(){
-        /* Si el repositorio en Localstorage esta vacio, carga por unica vez los datos del array */
-        
-        let repositorio = this.#recuperar(this.#nombreTabla)
-        if (repositorio == null){
-            this.#data = [
-                { id: 1, cat: "anillos", mod: "royal", precio: 350, stk: 10, title: "Anillo Royal", desc: "Este anillo te transportará dos siglos atrás donde las reinas lucían las creaciones de sus propios orfebres que eran ", img: "anillo_imperial.jpg"},
-                { id: 2, cat: "anillos", mod: "solitario", precio: 200, stk: 10, title: "Anillo Rococó", desc: "Una pieza que supera la prueba del tiempo, este glamoroso anillo de halo tiene en el centro una impresionante circonia cú", img: "anillo_rococo.jpg"},
-                { id: 3, cat: "aros", mod: "nature", precio: 150, stk: 10, title: "Anillo Royal", desc: "Este anillo te transportará dos siglos atrás donde las reinas lucían las creaciones de sus propios orfebres que eran ", img: "anillo_imperial.jpg"},
-                { id: 4, cat: "dijes", mod: "mariposa", precio: 50, stk: 10, title: "Anillo Royal", desc: "Este anillo te transportará dos siglos atrás donde las reinas lucían las creaciones de sus propios orfebres que eran ", img: "anillo_imperial.jpg"},
-            ]
-            this.#guardar()
-        } else {
-            this.#data = repositorio
-        }
-    }
-
-    #nombreTablaValidar(nombreTabla){
-		if(nombreTabla == undefined) throw new Error("Nombre de tabla requerida!");
-    }
-
-    #guardar(){
-        let datosAGuardar = JSON.stringify(this.#data)
-        localStorage.setItem(this.#nombreTabla, datosAGuardar)
-    }
-
-    #recuperar(key){
-        let data = localStorage.getItem(key)
-        return JSON.parse(data)
-    }
-
-    #existeId(id){
-        let idi = parseInt(id) - 1
-        console.log(idi)
-        return this.#data[idi] === undefined ? false : true
-    }
-
-    #existeRegistro(id) {
-        console.log("h"+this.#existeId(id))
-        if (!this.#existeId(id)) throw new Error("El registro no existe")
-    }
-
-    alta(data){
-        this.#data.push(data)
-        this.#guardar()
-        return this.#data.length
-    }
-
-    leer(id){
-        this.#existeRegistro(id)
-        return this.#data[id-1]
-    }
-
-    actualizar(id, data){
-        this.#existeRegistro(id)
-        this.#data[id-1] = data
-        this.#guardar()
-        return true
-    }
-
-    borrar(id){
-        this.#existeRegistro(id)
-        this.#data.splice(id-1, 1)
-        this.#guardar()
-        return true
-    }
-
-    leerTodo(){
-        return this.#data
-    }
-
-    asignarId(){
-        //Se asigna automaticamente el primer id disponible
-        //Si el ultimo id asignado coincide con la cantidad de objetos, se asigna el siguiente
-        let idA = this.#data.length
-        if (this.#data[idA-1].id == idA) { 
-            return this.#data.length + 1
-        } else {
-            //si no coincide se recorre el array 
-            for (let i = 0; i < this.#data.length; i++) {
-                //se chequea que el id coincida con la posicion en el array
-                if (parseInt(this.#data[i].id) == i + 1){
-                    console.log("id "+parseInt(i+1)+" ocupado")
-                } else {
-                    //Si no coincide se encontró el id vacante y se lo asigna
-                    console.log("id faltante :"+parseInt(i+1))
-                    return i+1
-                }
-                
-            }
-        }
-    }
-
-    buscarCat(str){
-        let busqueda = this.#data.find((el) => el.cat === str)
-        return busqueda
-    }
-
-    filtrar(str){
-        let filtro = this.#data.filter((el) => el.cat.includes(str))
-        return filtro
-    }
-
-    ordenar(){
-        //Se ordena el array por id para mantener el orden
-        this.#data.sort(function (a, b) {
-            if (a.id > b.id) {
-                return 1;
-            }
-            if (a.id < b.id) {
-                return -1;
-            }
-            // si a es igual a b 
-            return 0;
-        });
-    }
-
-}
+import {ALAB} from "./ALAB.js"
+import {mostrarTostada} from "./toastManager.js"
 
 
 function app() {
@@ -173,6 +42,8 @@ function app() {
     //--------------------------------------------------------
     //Eventos para los Botones
     //--------------------------------------------------------
+    
+    ///// GUARDAR ///////
     btnGuardar.addEventListener('click', (e)=>{
         e.preventDefault()
         if (opcion == 'crear'){
@@ -194,16 +65,19 @@ function app() {
         document.getElementById('id01').style.display='none'
     })
 
+    ///// CREAR ARTICULO ////////
     btnCrearItem.addEventListener('click', ()=>{
         document.getElementById('form').reset()
         document.getElementById('id01').style.display='block'
         opcion = 'crear'
     })
 
+    ///////// LEER TODO /////////
     btnLeerTodo.addEventListener('click', (e)=>{
         mostrar(sistema.leerTodo())
     })
 
+    ///// FILTRO POR CATEGORIA ////////
     btnFiltro.addEventListener('click', (e)=>{
         document.getElementById('id02').style.display='block'
     })
@@ -216,7 +90,7 @@ function app() {
         document.getElementById('id02').style.display='none'
     })
 
-    //Funcion para dar funcionalidad a btn Editar y Borrar de cada articulo 
+    //Funcion para dar funcionalidad a btn EDITAR y BORRAR de cada articulo 
     const on = (Element, Event, selector, handler) => {
         /* console.log(Element)
         console.log(Event)
@@ -229,7 +103,7 @@ function app() {
         })
     }
 
-    //Procedimiento para BORRAR
+    ///////Procedimiento para BORRAR/////////
     on(document, 'click', '.btnBorrar', e => {
         const fila = e.target.parentNode.parentNode
         idx = fila.firstElementChild.innerHTML
@@ -246,7 +120,7 @@ function app() {
         mostrarTostada()
     })
 
-    //Procedimiento para EDITAR
+    /////////Procedimiento para EDITAR/////////
     let idForm =0
     on(document, 'click', '.btnEditar', e => {
         const fila = e.target.parentNode.parentNode
@@ -275,11 +149,6 @@ function app() {
     //Se crea tabla mediante la funcion/metodo constructor
     let sistema = new ALAB("dbcontainer")
 
-    /* // Agrega un objeto al Array
-    sistema.alta({id: 5, cat: "dijes", mod: "flor", precio: 50})
-    console.log(sistema.asignarId())
- */
-    //La siguiente funciona como Funcion de orden superior(funcion que recibe una funcion)
     console.log(sistema.leerTodo())
     mostrar(sistema.leerTodo())
 /* 
@@ -287,33 +156,9 @@ function app() {
     let bus = prompt("Indique la categoria a BUSCAR (aros/anillos/dijes)>")
     console.log(sistema.buscarCat(bus))
 
-    //Metodo para filtrar
-    let fil = prompt("Indique la categoria a FILTRAR (aros/anillos/dijes)>")
-    console.log(sistema.filtrar(fil))
-    alert(JSON.stringify(sistema.filtrar(fil)))
+    
  */
-
-    function mostrarTostada(a){
-        if (a == "add") {
-
-            Toastify({
-                text: "Articulo AGREGADO!!!",
-                duration: 4000,
-                style: {
-                    background: "rgb(50,200,55)",
-                  },
-
-                }).showToast();
-        } else {
-            Toastify({
-                text: "Articulo BORRADO!!!!!",
-                duration: 4000,
-                style: {
-                    background: "rgb(255,0,0)",
-                  },
-                }).showToast();
-        }
-    }
+    
 }
 app();
 
