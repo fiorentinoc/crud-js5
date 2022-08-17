@@ -17,7 +17,7 @@ function app() {
     let opcion = ''
     let idx = 0
     
-    //Funcion que renderiza la Tabla con los datos
+    //Funcion RENDER de la tabla con los datos
     const mostrar = (articulos) => {
         resultados = ''
         articulos.forEach(articulo => {
